@@ -1,15 +1,15 @@
-# Pworker
+# Pwork
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/pworker`. To experiment with that code, run `bin/console` for an interactive prompt.
+Welcome to your Pwork. A gem to help with the execution of code on parallel threads.
 
-TODO: Delete this and the text above, and describe your gem
+> Parallel execution is especially useful at improving performance for long running I/O processes such as database & web service operations.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'pworker'
+gem 'pwork'
 ```
 
 And then execute:
@@ -18,11 +18,65 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install pworker
+    $ gem install pwork
 
 ## Usage
 
-TODO: Write usage instructions here
+Work provides the following options for parallel work execution:
+
+### #.peach
+This method provides a parallel thread based execution of an each block iteration over an array.
+
+**Params:**
+
+ - **thread_count** [Integer] [Optional] [Default=5] This is the number of threads that the parallel iteration should be spread across.
+
+**Example:**
+
+	#array each iteration using the default thread count
+    array.peach do |item|
+	    ......
+	end
+
+	#array each iteration using a specified thread count
+	array.peach(8) do |item|
+		......
+	end
+
+### Pwork::Worker
+
+The worker object is used to attach one or more blocks of code to execute in parallel.
+The number of threads to spread the parallel execution across can be specified in the workers construction.
+
+**Params:**
+
+ - **thread_count** [Integer] [Optional] [Default=5] This is the number of threads that the parallel iteration should be spread across.
+
+**Example:**
+
+    #create a worker with the default number of parallel threads
+    worker = Pwork::Worker.new
+
+    #create a worker with a specific number of parallel threads
+    worker = Pwork::Worker.new(8)
+
+Then add your blocks of code to execute in parallel:
+
+    worker.add do
+	    .......
+	end
+
+	worker.add do
+		.......
+	end
+
+Once all blocks of code required to be executed in parallel have been added to the worker, a call to the execute method is required to begin processing:
+
+    worker.execute
+
+All blocks of code will be executed in parallel across the workers threads.
+
+> The Worker object is not asynchronous, the worker processes are executed on separate threads in parallel but the worker execute method is synchronous and will wait until all execution has completed before continuing past the **worker.execute** call line.
 
 ## Development
 
