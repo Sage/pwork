@@ -22,7 +22,7 @@ Or install it yourself as:
 
 ## Usage
 
-Work provides the following options for parallel work execution:
+Pwork provides the following options for parallel work execution:
 
 ### #.peach
 This method provides a parallel thread based execution of an each block iteration over an array.
@@ -50,7 +50,7 @@ The number of threads to spread the parallel execution across can be specified i
 
 **Params:**
 
- - **thread_count** [Integer] [Optional] [Default=5] This is the number of threads that the parallel iteration should be spread across.
+ - **thread_count** [Integer] [Optional] [Default=5] This is the number of threads that the parallel execution should be spread across.
 
 **Example:**
 
@@ -86,7 +86,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/pworker. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/vaughanbrittonsage/pworker. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License
