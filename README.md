@@ -2,6 +2,7 @@
 
 
 [![Travis Status](https://travis-ci.org/Sage/pwork.svg?branch=master)](https://travis-ci.org/Sage/pwork)
+[![Code Climate](https://codeclimate.com/github/Sage/pwork.png)](https://codeclimate.com/github/Sage/pwork)
 [![Gem Version](https://badge.fury.io/rb/pwork.png)](http://badge.fury.io/rb/pwork)
 
 Welcome to your PWork. A gem to help with the execution of code on parallel threads.

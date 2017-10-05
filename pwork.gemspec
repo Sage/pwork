@@ -10,7 +10,7 @@ if ENV['TRAVIS_TAG'] != nil
 end
 
 # if the tag version starts with v (e.g. vx.x.x)
-if version.downcase.match /^v/
+if version.downcase.match(/^v/)
   #trim the v and set the version to x.x.x
   version = version.dup
   version.slice!(0)
