@@ -1,7 +1,13 @@
 language: ruby
 rvm:
-  - 2.3.4
+- 2.3.4
 cache: bundler
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+after_script:
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
 deploy:
   provider: rubygems
   api_key:
@@ -10,3 +16,6 @@ deploy:
   on:
     tags: true
     condition: "$TRAVIS_RUBY_VERSION == 2.3.4"
+env:
+  global:
+    secure: DmNYliyOnbVHQpWjmhsjmjOhZUjZpDDoZr2LBkKMoIJZnpVXlP4RFlPTHeMSo37Wb8a9LRmpntMtkPAdoYgXW41i4QyyLrY40PegAwFRomLfQdcUCTr9Vmi1mE9jkNS57zJW18ac7PwIQemfxj5vunB1kVROUitlAxkNFZoXMF1r9lxSVyZBwYyiTs42kinFNGG2uaDeaH9M0ciqw1gXBlB2Cwp+yZWhDSMJlMH9uevkCbiYk502DTIDPktaUEJPxTnNmTsnM1h1KeclG5uo2r23diSgMYsz79gatwlzX/yAeZoTNSa8PL7ZaPlAfpZh6p3YJ04LY3uxO9FhbYLgKcjYpSPW6zegUrdyjt3v1EPcDfxUIDRIzhlm+KmOaxgJiJCc8t5eGAlqIbHSOofnNyzX565Rc/5noopO2y+GztamAm4w3bnqMV6R7Cdgyfin2BraPqLxhkQY9o7nqNhfw7ackX5Cipno3GC8iNIn7jrKb9MaRNR3+3iqhUO7lJJN/H+OB6FP1v1E/N0RNLX7OiDWmfMLRzmkjMu599h/WWoACbEatfTeHpyJJFVEKopivA3Yx0kG2F60lQWlXtAnxMm0zaqWVd3jle2a6XD8FTPfxCDCxS5s7N7eC5NmmAAeScxxj3IxMgyY7m5g7573hod+3ctQfqzZ08+Ui8kL0JI=
