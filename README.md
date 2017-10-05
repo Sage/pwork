@@ -1,5 +1,9 @@
 # PWork
 
+
+[![Travis Status](https://travis-ci.org/Sage/pwork.svg?branch=master)](https://travis-ci.org/Sage/pwork)
+[![Gem Version](https://badge.fury.io/rb/pwork.png)](http://badge.fury.io/rb/pwork)
+
 Welcome to your PWork. A gem to help with the execution of code on parallel threads.
 
 > Parallel execution is especially useful at improving performance for long running I/O processes such as database & web service operations.
@@ -86,7 +90,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/vaughanbrittonsage/pworker. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/sage/pwork. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License
