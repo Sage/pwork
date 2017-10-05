@@ -3,3 +3,4 @@ src/.DS_Store
 src/log/*
 src/tmp/*
 .idea
+Gemfile.lock

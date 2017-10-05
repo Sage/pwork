@@ -1,4 +1,3 @@
-require 'pwork/version'
 require_relative 'pwork/helpers/thread'
 
 require_relative 'pwork/array'
