@@ -1,3 +1,3 @@
-module Pwork
-  VERSION = "0.1.1"
+module PWork
+  VERSION = "1.0.0"
 end
