@@ -4,3 +4,4 @@ src/log/*
 src/tmp/*
 .idea
 Gemfile.lock
+coverage
