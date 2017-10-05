@@ -1,9 +1,9 @@
 module PWork
   class ThreadPool
-    def initialize(size: 5)
-      @size = size
+    def initialize(threads: 5)
+      @size = threads
       @jobs = Queue.new
-      @pool = Array.new(size) do
+      @pool = Array.new(threads) do
         Thread.new do
           catch(:exit) do
             loop do

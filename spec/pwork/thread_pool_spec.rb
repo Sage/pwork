@@ -1,6 +1,6 @@
 RSpec.describe 'ThreadPool' do
   it 'should execute all blocks when more blocks of code than threads' do
-    thread_pool = PWork::ThreadPool.new(size: 5)
+    thread_pool = PWork::ThreadPool.new(threads: 5)
     completed = Queue.new
 
     15.times do
@@ -17,7 +17,7 @@ RSpec.describe 'ThreadPool' do
 
   end
   it 'should execute all blocks when less blocks of code than threads' do
-    thread_pool = PWork::ThreadPool.new(size: 10)
+    thread_pool = PWork::ThreadPool.new(threads: 10)
     completed = Queue.new
 
     5.times do

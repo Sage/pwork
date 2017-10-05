@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    pwork (0.1.1-java)
+    pwork (1.0.0-java)
 
 GEM
   remote: https://rubygems.org/

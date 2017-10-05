@@ -1,9 +1,9 @@
 module PWork
   class Worker
 
-    def initialize(thread_count = 5)
+    def initialize(threads: 5)
       @processes = []
-      @thread_count = thread_count
+      @thread_count = threads
     end
 
     #This method is called to add a process to this worker

@@ -1,6 +1,6 @@
-# Pwork
+# PWork
 
-Welcome to your Pwork. A gem to help with the execution of code on parallel threads.
+Welcome to your PWork. A gem to help with the execution of code on parallel threads.
 
 > Parallel execution is especially useful at improving performance for long running I/O processes such as database & web service operations.
 
@@ -22,7 +22,7 @@ Or install it yourself as:
 
 ## Usage
 
-Pwork provides the following options for parallel work execution:
+PWork provides the following options for parallel work execution:
 
 ### #.peach
 This method provides a parallel thread based execution of an each block iteration over an array.
@@ -43,7 +43,7 @@ This method provides a parallel thread based execution of an each block iteratio
 		......
 	end
 
-### Pwork::Worker
+### PWork::Worker
 
 The worker object is used to attach one or more blocks of code to execute in parallel.
 The number of threads to spread the parallel execution across can be specified in the workers construction.
@@ -58,7 +58,7 @@ The number of threads to spread the parallel execution across can be specified i
     worker = Pwork::Worker.new
 
     #create a worker with a specific number of parallel threads
-    worker = Pwork::Worker.new(8)
+    worker = Pwork::Worker.new(threads: 8)
 
 Then add your blocks of code to execute in parallel:
 

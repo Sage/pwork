@@ -3,9 +3,9 @@ java_import java.util.concurrent.Executors
 module PWork
   class ThreadPool
 
-    def initialize(size: 5)
+    def initialize(threads: 5)
       @processes = []
-      @executor = java.util.concurrent.Executors::newFixedThreadPool size
+      @executor = java.util.concurrent.Executors::newFixedThreadPool threads
     end
 
     #This method is called to pass a block to be ran on a thread within the thread pool

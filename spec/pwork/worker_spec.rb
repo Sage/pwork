@@ -188,7 +188,7 @@ RSpec.describe PWork::Worker do
     results = []
     completed = []
 
-    worker = PWork::Worker.new(10)
+    worker = PWork::Worker.new(threads:10)
     worker.add do
 
       thread_details = Thread.current.inspect
