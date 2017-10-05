@@ -1,11 +1,30 @@
-# coding: utf-8
+# frozen_string_literal: true
+
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'pwork/version'
+
+version = ''
+if ENV['TRAVIS_TAG'] != nil
+  puts "CI Branch - '#{ENV['TRAVIS_TAG']}'"
+  version = ENV['TRAVIS_TAG']
+end
+
+# if the tag version starts with v (e.g. vx.x.x)
+if version.downcase.match /^v/
+  #trim the v and set the version to x.x.x
+  version = version.dup
+  version.slice!(0)
+elsif ENV['TRAVIS_TAG'] != nil && ENV['TRAVIS_TAG'] != ''
+  #allow none release tags to build alpha, beta, dev versions of the gem.
+  version = "0.0.0.#{ENV['TRAVIS_TAG']}"
+else
+  #otherwise it is not a valid release tag so set the version 0.0.0 as it not being released.
+  version = '0.0.0'
+end
 
 Gem::Specification.new do |spec|
   spec.name          = 'pwork'
-  spec.version       = PWork::VERSION
+  spec.version       = version
   spec.authors       = ['vaughanbrittonsage']
   spec.email         = ['vaughan.britton@sage.com']
 
@@ -27,5 +46,4 @@ Gem::Specification.new do |spec|
   if RUBY_PLATFORM =~ /java/
     spec.platform = 'java'
   end
-
 end

@@ -2,3 +2,11 @@ language: ruby
 rvm:
   - 2.3.4
 cache: bundler
+deploy:
+  provider: rubygems
+  api_key:
+    secure: upZhf4cvA1wg5GkRqfR7qQvq70Nk3NA8C2IZNkinq8GhvL8nA9+NzmIdKpRqZ9tO5izT0LuiBp3z06vpsmWKVMOSWOjx5d6hhTtA/CCCB7zGJEaRDKZ3a7/LbeRoc4L764Ayl3AUMHThjkAhGij8X5FFYLAVXCJwnOP1/FMyBiOhI02n7NocJjGlvCMWjiWZUcMxiyenLwUkuYGVqBkvK/JTzxvthdsGzkpb29oFhimeQGHGw9lr04ITatb56lp+NWJg+UZYyI5nKnAN29mgLdINjRKMVo1prIX6E6aZCPT9vkR+bz2B89mcSfl/0I+cmcqCWtmLhTSpING/HgXzyNRUKN4cprTAxbrCi4SpSaVfaTpKe3vS23kZJfD9yYx3IY/bEXwFounWZsDbfFDLXlAaes8kViRQNftR8Khy2Lf1Ig7UeseILQ9lXfDmEG9ZbUMQSOyuzTviy/8PN665R74HKaNkswKzt+uqT+SNQ6KOv7QumqBDL+ZPTqI9+a8mpBRB2kq8/A0ojJCNVX5Dnpu7/OmqMJY48WMyMROOy2zK8CcsgWoMD1m8hMczAngRYDv4H2+DvXWFzig0Nvp+ZrEcoiV2MoF5psJzMZEHloor7RbsVFmqwyMph9V3pp7ci+pVekgPo9p4AesPBm2Z2f1OvuT7bdM7Cn4OUbj1290=
+  gem: pwork
+  on:
+    tags: true
+    condition: "$TRAVIS_RUBY_VERSION == 2.3.4"
