@@ -9,9 +9,6 @@ module PWork
         options[:caller] = self
         PWork::Async.add_task(options, &block)
       else
-        raise PWork::Async::Exceptions::InvalidOptionsError.new(
-          'Unknown async option.'
-        ) unless options == :wait || options == :wait_local
         PWork::Async.wait_for_tasks({ caller: self, command: options })
       end
     end
