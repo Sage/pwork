@@ -6,9 +6,6 @@ module PWork
   module Async
     def async(options = nil, &block)
       if block_given?
-        raise PWork::Async::Exceptions::InvalidOptionsError.new(
-          'Async options must be a Hash.'
-        ) if options != nil && !options.is_a?(Hash)
         PWork::Async.add_task(options, &block)
       else
         raise PWork::Async::Exceptions::InvalidOptionsError.new(
@@ -23,6 +20,10 @@ module PWork
     end
 
     def self.add_task(options, &block)
+      raise PWork::Async::Exceptions::InvalidOptionsError.new(
+        'Async options must be a Hash.'
+      ) if options != nil && !options.is_a?(Hash)
+
       manager.start unless manager.running
 
       options = {} if options == nil
