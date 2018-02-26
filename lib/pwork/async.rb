@@ -42,9 +42,24 @@ module PWork
 
     def self.wait_for_tasks
       until tasks.detect { |t| t.state == :pending || t.state == :active }.nil?
-        sleep(0.01)
+        sleep(async_wait_sleep_iteration)
       end
-      Thread.current[:pwork_async_tasks] = []
+      handle_errors
+      ensure
+        Thread.current[:pwork_async_tasks] = []
+    end
+
+    def self.handle_errors
+      error_messages = []
+      tasks.select { |t| t.state == :error }.each do |t|
+        error_messages << "Error: #{t.error.message}, #{t.error.backtrace}"
+      end
+      raise PWork::Async::Exceptions::TaskError.new("1 or more async errors occurred. #{error_messages.join(' | ')}") if error_messages.length > 0
+      true
+    end
+
+    def self.async_wait_sleep_iteration
+      Integer(ENV.fetch('PWORK_ASYNC_WAIT_SLEEP_ITERATION', 0.01))
     end
   end
 end
