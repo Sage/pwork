@@ -68,7 +68,7 @@ module PWork
     end
 
     def self.async_wait_sleep_iteration
-      Integer(ENV.fetch('PWORK_ASYNC_WAIT_SLEEP_ITERATION', 0.01))
+      Float(ENV.fetch('PWORK_ASYNC_WAIT_SLEEP_ITERATION', '0.02'))
     end
   end
 end
