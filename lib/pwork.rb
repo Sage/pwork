@@ -8,3 +8,5 @@ if RUBY_PLATFORM =~ /java/
 else
   require_relative 'pwork/mri/thread_pool'
 end
+
+require_relative 'pwork/async'

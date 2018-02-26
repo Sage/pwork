@@ -29,7 +29,60 @@ Or install it yourself as:
 
 PWork provides the following options for parallel work execution:
 
-### #.peach
+### Async
+
+PWork now provides an async/await style syntax over a task queue in a similar way to nodejs & c#.
+
+This makes writing/reading asyncronous code much easier and provides performance benefits from thread pooling behind the scenes.
+
+Example:
+
+    class UserModel
+        include PWork::Async
+        
+        def save(user, permissions)
+            # save the user data to the database
+            async do
+                user_repository.set(user)
+            end
+            
+            # save the permissions data to the database
+            async do
+                permissions_repository.set(permissions)
+            end
+            
+            # store the user data in the cache
+            async(wait: false) do
+                cache.set(cache_key, user)
+            end
+            
+            # wait for all async tasks issued from this thread to complete 
+            # (unless the async task specified `wait: false`)
+            async :wait
+        end
+    end
+
+The above example shows how you might use the async/wait syntax within a save method of a user model to split the blocking calls
+of storing the user & permissions data in the database and updating the cache. The example above also shows how the set cache async block can be
+specified as not requiring wait as the results are not needed in the sync flow.
+
+Using the above async flow if we look at the execution time required for each of the blocking calls:
+
+- user_repository.set # 100ms
+- permissions_repository.set # 120ms
+- cache.set # 40ms
+
+In a sync flow the `save` method would take approx 260ms (100+120+40), but via async it should take no more than 120ms.
+
+The following environment variable can be used to specify the async task pool size:
+
+- **PWORK_ASYNC_POOL_SIZE** [Integer] [Optional] [Default=10] 
+
+> This is the number of threads within the async pool to use for processing async tasks           
+
+### .peach
+> This functionality is now deprecated in favour of the Async/Await model detailed above.
+
 This method provides a parallel thread based execution of an each block iteration over an array.
 
 **Params:**
@@ -49,6 +102,8 @@ This method provides a parallel thread based execution of an each block iteratio
 	end
 
 ### PWork::Worker
+
+> This functionality is now deprecated in favour of the Async/Await model detailed above.
 
 The worker object is used to attach one or more blocks of code to execute in parallel.
 The number of threads to spread the parallel execution across can be specified in the workers construction.
