@@ -73,9 +73,16 @@ Using the above async flow if we look at the execution time required for each of
 - cache.set # 40ms
 
 In a sync flow the `save` method would take approx 260ms (100+120+40), but via async it should take no more than 120ms.
-            
+
+The following environment variable can be used to specify the async task pool size:
+
+- **PWORK_ASYNC_POOL_SIZE** [Integer] [Optional] [Default=10] 
+
+> This is the number of threads within the async pool to use for processing async tasks           
 
 ### .peach
+> This functionality is now deprecated in favour of the Async/Await model detailed above.
+
 This method provides a parallel thread based execution of an each block iteration over an array.
 
 **Params:**
@@ -95,6 +102,8 @@ This method provides a parallel thread based execution of an each block iteratio
 	end
 
 ### PWork::Worker
+
+> This functionality is now deprecated in favour of the Async/Await model detailed above.
 
 The worker object is used to attach one or more blocks of code to execute in parallel.
 The number of threads to spread the parallel execution across can be specified in the workers construction.
