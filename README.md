@@ -61,6 +61,7 @@ Example:
             async :wait
         end
     end
+   
 
 The above example shows how you might use the async/wait syntax within a save method of a user model to split the blocking calls
 of storing the user & permissions data in the database and updating the cache. The example above also shows how the set cache async block can be
@@ -74,69 +75,33 @@ Using the above async flow if we look at the execution time required for each of
 
 In a sync flow the `save` method would take approx 260ms (100+120+40), but via async it should take no more than 120ms.
 
-The following environment variable can be used to specify the async task pool size:
+
+#### Environment Variables
 
 - **PWORK_ASYNC_POOL_SIZE** [Integer] [Optional] [Default=10] 
+> This env var is used to specify the async task pool size
+
+- **PWORK_ASYNC_WAIT_SLEEP_ITERATION** [Integer] [Optional] [Default=0.01] 
+> This env var is used to specify the time between wait intervals when waiting for async tasks to complete
+
+#### Methods
+
+#### `async do`
+
+This is used to define a async task block that should be executed asynchronously within the task pool.
+
+#### `async :wait`
+
+This is used to wait for all async tasks declared from the current thread to complete.
+
+#### `async :wait_local`
+
+This is used to wait for all async tasks declared from the current object on the current thread to complete.
+
+> This is useful to allow async/wait not to interfere with other async calls from within other objects)
+
 
 > This is the number of threads within the async pool to use for processing async tasks           
-
-### .peach
-> This functionality is now deprecated in favour of the Async/Await model detailed above.
-
-This method provides a parallel thread based execution of an each block iteration over an array.
-
-**Params:**
-
- - **thread_count** [Integer] [Optional] [Default=5] This is the number of threads that the parallel iteration should be spread across.
-
-**Example:**
-
-	#array each iteration using the default thread count
-    array.peach do |item|
-	    ......
-	end
-
-	#array each iteration using a specified thread count
-	array.peach(8) do |item|
-		......
-	end
-
-### PWork::Worker
-
-> This functionality is now deprecated in favour of the Async/Await model detailed above.
-
-The worker object is used to attach one or more blocks of code to execute in parallel.
-The number of threads to spread the parallel execution across can be specified in the workers construction.
-
-**Params:**
-
- - **thread_count** [Integer] [Optional] [Default=5] This is the number of threads that the parallel execution should be spread across.
-
-**Example:**
-
-    #create a worker with the default number of parallel threads
-    worker = Pwork::Worker.new
-
-    #create a worker with a specific number of parallel threads
-    worker = Pwork::Worker.new(threads: 8)
-
-Then add your blocks of code to execute in parallel:
-
-    worker.add do
-	    .......
-	end
-
-	worker.add do
-		.......
-	end
-
-Once all blocks of code required to be executed in parallel have been added to the worker, a call to the execute method is required to begin processing:
-
-    worker.execute
-
-All blocks of code will be executed in parallel across the workers threads.
-
-> The Worker object is not asynchronous, the worker processes are executed on separate threads in parallel but the worker execute method is synchronous and will wait until all execution has completed before continuing past the **worker.execute** call line.
 
 ## Development
 

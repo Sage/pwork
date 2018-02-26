@@ -4,14 +4,12 @@ require_relative 'async/manager'
 
 module PWork
   module Async
-    def async(options = nil, &block)
+    def async(options = {}, &block)
       if block_given?
+        options[:caller] = self
         PWork::Async.add_task(options, &block)
       else
-        raise PWork::Async::Exceptions::InvalidOptionsError.new(
-          'Unknown async option.'
-        ) unless options == :wait
-        PWork::Async.wait_for_tasks
+        PWork::Async.wait_for_tasks({ caller: self, command: options })
       end
     end
 
@@ -22,9 +20,9 @@ module PWork
     def self.add_task(options, &block)
       manager.start unless manager.running
 
-      options = {} if options == nil
       task = PWork::Async::Task.new.tap do |e|
         e.block = block
+        e.caller = options[:caller]
       end
 
       unless options[:wait] == false
@@ -40,11 +38,20 @@ module PWork
       Thread.current[:pwork_async_tasks] ||= []
     end
 
-    def self.wait_for_tasks
-      until tasks.detect { |t| t.state == :pending || t.state == :active }.nil?
+    def self.wait_for_tasks(options)
+      case options[:command]
+        when :wait
+          task_list = tasks
+        when :wait_local
+          task_list = tasks.select { |t| t.caller == options[:caller] }
+      end
+
+      until task_list.detect { |t| t.state == :pending || t.state == :active }.nil?
         sleep(async_wait_sleep_iteration)
       end
+
       handle_errors
+
       ensure
         Thread.current[:pwork_async_tasks] = []
     end
@@ -54,7 +61,9 @@ module PWork
       tasks.select { |t| t.state == :error }.each do |t|
         error_messages << "Error: #{t.error.message}, #{t.error.backtrace}"
       end
-      raise PWork::Async::Exceptions::TaskError.new("1 or more async errors occurred. #{error_messages.join(' | ')}") if error_messages.length > 0
+      raise PWork::Async::Exceptions::TaskError.new(
+        "1 or more async errors occurred. #{error_messages.join(' | ')}"
+      ) if error_messages.length > 0
       true
     end
 
