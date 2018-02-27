@@ -78,4 +78,16 @@ RSpec.describe ExampleClient do
       end
     end
   end
+  context 'when async mode is :test' do
+    before do
+      ENV['PWORK_ASYNC_MODE'] = 'test'
+    end
+    it 'makes multiple http calls asyncronously' do
+      subject.multi_call_async
+      subject.wait
+    end
+    after do
+      ENV['PWORK_ASYNC_MODE'] = nil
+    end
+  end
 end

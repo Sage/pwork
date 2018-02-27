@@ -5,11 +5,18 @@ require_relative 'async/manager'
 module PWork
   module Async
     def async(options = {}, &block)
-      if PWork::Async.mode == 'fork'
-        PWork::Async.async_forked(options, &block)
-      else
-        PWork::Async.async_threaded(options, &block)
+      case PWork::Async.mode
+        when 'fork'
+          PWork::Async.async_forked(options, &block)
+        when 'test'
+          PWork::Async.async_test(options, &block)
+        else
+          PWork::Async.async_threaded(options, &block)
       end
+    end
+
+    def self.async_test(options = {}, &block)
+      block.call if block_given?
     end
 
     def self.async_forked(options = {}, &block)
@@ -94,11 +101,7 @@ module PWork
     end
 
     def self.mode
-      if ENV['PWORK_ASYNC_MODE'].to_s.downcase == 'fork'
-        'fork'
-      else
-        'thread'
-      end
+      ENV.fetch('PWORK_ASYNC_MODE', 'thread').to_s.downcase
     end
 
     def self.reset
