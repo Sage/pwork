@@ -14,14 +14,15 @@ module PWork
 
     def self.async_forked(options = {}, &block)
       if block_given?
-        PWork::Async.tasks << fork do
+        pid = fork do
           block.call
         end
+        PWork::Async.tasks << pid unless options[:wait] == false
       else
         PWork::Async.tasks.each do |pid|
           Process.wait(pid)
-          PWork::Async.tasks.delete(pid)
         end
+        reset
       end
     end
 
@@ -93,11 +94,15 @@ module PWork
     end
 
     def self.mode
-      @mode ||= if ENV['PWORK_ASYNC_MODE'].to_s.downcase == 'fork'
+      if ENV['PWORK_ASYNC_MODE'].to_s.downcase == 'fork'
         :fork
       else
         :thread
       end
+    end
+
+    def self.reset
+      Thread.current[:pwork_async_tasks] = []
     end
   end
 end
