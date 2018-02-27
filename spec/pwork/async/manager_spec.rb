@@ -24,6 +24,12 @@ RSpec.describe PWork::Async::Manager do
         end
       end
     end
+    context 'when a none task object is specified' do
+      let(:task) { double }
+      it 'raises an error' do
+        expect { subject.add_task(task) }.to raise_error(PWork::Async::Exceptions::InvalidOptionsError)
+      end
+    end
     context 'when a task processes without error' do
       it 'sets the task status to :complete' do
         subject.process_task(task)
@@ -41,6 +47,11 @@ RSpec.describe PWork::Async::Manager do
         expect(task.state).to eq :error
         expect(task.error).to be_a(StandardError)
       end
+    end
+  end
+  describe '#thread_helper' do
+    it 'returns the thread helper' do
+      expect(subject.thread_helper).to eq PWork::Helpers::Threads
     end
   end
 end
