@@ -5,6 +5,27 @@ require_relative 'async/manager'
 module PWork
   module Async
     def async(options = {}, &block)
+      if PWork::Async.mode == :fork
+        PWork::Async.async_forked(options, &block)
+      else
+        PWork::Async.async_threaded(options, &block)
+      end
+    end
+
+    def self.async_forked(options = {}, &block)
+      if block_given?
+        PWork::Async.tasks << fork do
+          block.call
+        end
+      else
+        PWork::Async.tasks.each do |pid|
+          Process.wait(pid)
+          PWork::Async.tasks.delete(pid)
+        end
+      end
+    end
+
+    def self.async_threaded(options = {}, &block)
       if block_given?
         options[:caller] = self
         PWork::Async.add_task(options, &block)
@@ -69,6 +90,14 @@ module PWork
 
     def self.async_wait_sleep_iteration
       Float(ENV.fetch('PWORK_ASYNC_WAIT_SLEEP_ITERATION', '0.02'))
+    end
+
+    def self.mode
+      @mode ||= if ENV['PWORK_ASYNC_MODE'].to_s.downcase == 'fork'
+        :fork
+      else
+        :thread
+      end
     end
   end
 end
