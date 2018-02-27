@@ -45,10 +45,37 @@ class ExampleClient
 end
 
 RSpec.describe ExampleClient do
-  it 'makes multiple http calls asyncronously' do
-    subject.multi_call_async
-    expect(PWork::Async.tasks.length).to eq 9
-    subject.wait
-    expect(PWork::Async.tasks.length).to eq 0
+  before do
+    PWork::Async.reset
+  end
+  context 'when async mode is :thread' do
+    before do
+      ENV['PWORK_ASYNC_MODE'] = 'thread'
+    end
+    it 'makes multiple http calls asyncronously' do
+      subject.multi_call_async
+      expect(PWork::Async.tasks.length).to eq 9
+      subject.wait
+      expect(PWork::Async.tasks.length).to eq 0
+    end
+    after do
+      ENV['PWORK_ASYNC_MODE'] = nil
+    end
+  end
+  unless RUBY_PLATFORM =~ /java/
+    context 'when async mode is :fork' do
+      before do
+        ENV['PWORK_ASYNC_MODE'] = 'fork'
+      end
+      it 'makes multiple http calls asyncronously' do
+        subject.multi_call_async
+        expect(PWork::Async.tasks.length).to eq 9
+        subject.wait
+        expect(PWork::Async.tasks.length).to eq 0
+      end
+      after do
+        ENV['PWORK_ASYNC_MODE'] = nil
+      end
+    end
   end
 end

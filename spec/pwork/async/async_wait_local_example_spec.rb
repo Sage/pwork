@@ -45,6 +45,9 @@ class ExampleClient3
 end
 
 RSpec.describe ExampleClient3 do
+  before do
+    PWork::Async.reset
+  end
   it 'makes multiple http calls asyncronously' do
     ExampleClient2.new.multi_call_async
     subject.multi_call_async
