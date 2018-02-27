@@ -73,9 +73,7 @@ module PWork
           task_list = tasks.select { |t| t.caller == options[:caller] }
       end
 
-      until task_list.detect { |t| t.state == :pending || t.state == :active }.nil?
-        sleep(async_wait_sleep_iteration)
-      end
+      task_list.each { |t| t.thread.join }
 
       handle_errors
 
