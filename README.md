@@ -78,8 +78,10 @@ In a sync flow the `save` method would take approx 260ms (100+120+40), but via a
 
 #### Environment Variables
 
-- **PWORK_ASYNC_POOL_SIZE** [Integer] [Optional] [Default=10] 
-> This env var is used to specify the async task pool size
+- **PWORK_ASYNC_MODE** [String] [Optional] [Default=thread] (thread/fork/test) 
+> This env var is used to specify the mode to use for async tasks.
+
+> `test` mode processes tasks synchronously and is useful for testing.
 
 - **PWORK_ASYNC_WAIT_SLEEP_ITERATION** [Integer] [Optional] [Default=0.01] 
 > This env var is used to specify the time between wait intervals when waiting for async tasks to complete

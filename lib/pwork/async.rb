@@ -11,7 +11,7 @@ module PWork
         when 'test'
           PWork::Async.async_test(options, &block)
         else
-          PWork::Async.async_threaded(options, &block)
+          PWork::Async.async_threaded(options, self, &block)
       end
     end
 
@@ -33,12 +33,12 @@ module PWork
       end
     end
 
-    def self.async_threaded(options = {}, &block)
+    def self.async_threaded(options = {}, caller, &block)
       if block_given?
-        options[:caller] = self
+        options[:caller] = caller
         PWork::Async.add_task(options, &block)
       else
-        PWork::Async.wait_for_tasks({ caller: self, command: options })
+        PWork::Async.wait_for_tasks({ caller: caller, command: options })
       end
     end
 
@@ -47,8 +47,6 @@ module PWork
     end
 
     def self.add_task(options, &block)
-      manager.start unless manager.running
-
       task = PWork::Async::Task.new.tap do |e|
         e.block = block
         e.caller = options[:caller]
@@ -75,9 +73,7 @@ module PWork
           task_list = tasks.select { |t| t.caller == options[:caller] }
       end
 
-      until task_list.detect { |t| t.state == :pending || t.state == :active }.nil?
-        sleep(async_wait_sleep_iteration)
-      end
+      task_list.each { |t| t.thread.join }
 
       handle_errors
 
@@ -94,10 +90,6 @@ module PWork
         "1 or more async errors occurred. #{error_messages.join(' | ')}"
       ) if error_messages.length > 0
       true
-    end
-
-    def self.async_wait_sleep_iteration
-      Float(ENV.fetch('PWORK_ASYNC_WAIT_SLEEP_ITERATION', '0.02'))
     end
 
     def self.mode
