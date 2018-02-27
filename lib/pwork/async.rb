@@ -11,7 +11,7 @@ module PWork
         when 'test'
           PWork::Async.async_test(options, &block)
         else
-          PWork::Async.async_threaded(options, &block)
+          PWork::Async.async_threaded(options, self, &block)
       end
     end
 
@@ -33,12 +33,12 @@ module PWork
       end
     end
 
-    def self.async_threaded(options = {}, &block)
+    def self.async_threaded(options = {}, caller, &block)
       if block_given?
-        options[:caller] = self
+        options[:caller] = caller
         PWork::Async.add_task(options, &block)
       else
-        PWork::Async.wait_for_tasks({ caller: self, command: options })
+        PWork::Async.wait_for_tasks({ caller: caller, command: options })
       end
     end
 
