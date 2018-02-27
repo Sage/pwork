@@ -47,8 +47,6 @@ module PWork
     end
 
     def self.add_task(options, &block)
-      manager.start unless manager.running
-
       task = PWork::Async::Task.new.tap do |e|
         e.block = block
         e.caller = options[:caller]

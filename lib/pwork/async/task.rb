@@ -8,10 +8,11 @@ module PWork
       attr_accessor :error
       attr_accessor :block
       attr_accessor :caller
+      attr_accessor :thread
       def initialize
         self.id = SecureRandom.uuid
         self.state = :pending
-        self.thread_local_storage = []
+        self.thread_local_storage = {}
       end
     end
   end
