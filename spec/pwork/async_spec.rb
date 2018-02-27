@@ -23,7 +23,7 @@ RSpec.describe PWork::Async do
         ENV['PWORK_ASYNC_MODE'] = nil
       end
       it 'returns the default value' do
-        expect(PWork::Async.mode).to eq :thread
+        expect(PWork::Async.mode).to eq 'thread'
       end
     end
     context 'when a value is specified via env variable' do
@@ -32,7 +32,7 @@ RSpec.describe PWork::Async do
           ENV['PWORK_ASYNC_MODE'] = 'fork'
         end
         it 'returns the env var value' do
-          expect(PWork::Async.mode).to eq :fork
+          expect(PWork::Async.mode).to eq 'fork'
         end
       end
       context 'when async mode is set to thread' do
@@ -40,7 +40,7 @@ RSpec.describe PWork::Async do
           ENV['PWORK_ASYNC_MODE'] = 'thread'
         end
         it 'returns the env var value' do
-          expect(PWork::Async.mode).to eq :thread
+          expect(PWork::Async.mode).to eq 'thread'
         end
       end
     end

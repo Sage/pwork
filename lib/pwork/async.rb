@@ -5,7 +5,7 @@ require_relative 'async/manager'
 module PWork
   module Async
     def async(options = {}, &block)
-      if PWork::Async.mode == :fork
+      if PWork::Async.mode == 'fork'
         PWork::Async.async_forked(options, &block)
       else
         PWork::Async.async_threaded(options, &block)
@@ -95,9 +95,9 @@ module PWork
 
     def self.mode
       if ENV['PWORK_ASYNC_MODE'].to_s.downcase == 'fork'
-        :fork
+        'fork'
       else
-        :thread
+        'thread'
       end
     end
 
