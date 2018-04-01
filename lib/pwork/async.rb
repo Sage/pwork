@@ -78,7 +78,7 @@ module PWork
       handle_errors
 
       ensure
-        Thread.current[:pwork_async_tasks] = []
+        Thread.current[:pwork_async_tasks] -= task_list
     end
 
     def self.handle_errors

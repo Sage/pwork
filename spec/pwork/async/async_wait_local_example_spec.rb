@@ -53,6 +53,9 @@ RSpec.describe ExampleClient3 do
     subject.multi_call_async
     expect(PWork::Async.tasks.length).to eq 6
     subject.wait
-    expect(PWork::Async.tasks.length).to eq 0
+    expect(PWork::Async.tasks.length).to eq 2
+  end
+  after do
+    PWork::Async.reset
   end
 end
