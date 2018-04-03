@@ -83,9 +83,6 @@ In a sync flow the `save` method would take approx 260ms (100+120+40), but via a
 
 > `test` mode processes tasks synchronously and is useful for testing.
 
-- **PWORK_ASYNC_WAIT_SLEEP_ITERATION** [Integer] [Optional] [Default=0.01] 
-> This env var is used to specify the time between wait intervals when waiting for async tasks to complete
-
 #### Methods
 
 #### `async do`

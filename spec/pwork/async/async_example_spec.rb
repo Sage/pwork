@@ -39,6 +39,15 @@ class ExampleClient
     end
   end
 
+  def async_thread_storage
+    @request_id = nil
+    async do
+      @request_id = Thread.current[:request][:id]
+    end
+    async :wait
+    @request_id
+  end
+
   def wait
     async :wait
   end
@@ -55,8 +64,17 @@ RSpec.describe ExampleClient do
     it 'makes multiple http calls asyncronously' do
       subject.multi_call_async
       expect(PWork::Async.tasks.length).to eq 9
+      started = Time.now.to_f
       subject.wait
+      completed = Time.now.to_f
+      duration = completed - started
+      expect(duration).to be < 0.3
       expect(PWork::Async.tasks.length).to eq 0
+    end
+    let(:request_id) { SecureRandom.uuid }
+    it 'copies thread local storage into async threads' do
+      Thread.current[:request] = { id: request_id }
+      expect(subject.async_thread_storage).to eq request_id
     end
     after do
       ENV['PWORK_ASYNC_MODE'] = nil
