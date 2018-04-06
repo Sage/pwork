@@ -2,6 +2,6 @@ src/.DS_Store
 .DS_Store
 src/log/*
 src/tmp/*
-.idea
+.idea/
 Gemfile.lock
-coverage
+coverage/

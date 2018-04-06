@@ -1,8 +1,8 @@
 # PWork
 
-
 [![Travis Status](https://travis-ci.org/Sage/pwork.svg?branch=master)](https://travis-ci.org/Sage/pwork)
-[![Code Climate](https://codeclimate.com/github/Sage/pwork.png)](https://codeclimate.com/github/Sage/pwork)
+[![Maintainability](https://api.codeclimate.com/v1/badges/de3ba0937a6d13fcbd6a/maintainability)](https://codeclimate.com/github/Sage/pwork/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/de3ba0937a6d13fcbd6a/test_coverage)](https://codeclimate.com/github/Sage/pwork/test_coverage)
 [![Gem Version](https://badge.fury.io/rb/pwork.png)](http://badge.fury.io/rb/pwork)
 
 Welcome to your PWork. A gem to help with the execution of code on parallel threads.
@@ -19,11 +19,15 @@ gem 'pwork'
 
 And then execute:
 
-    $ bundle
+```bash
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install pwork
+```bash
+$ gem install pwork
+```
 
 ## Usage
 
@@ -37,31 +41,33 @@ This makes writing/reading asyncronous code much easier and provides performance
 
 Example:
 
-    class UserModel
-        include PWork::Async
-        
-        def save(user, permissions)
-            # save the user data to the database
-            async do
-                user_repository.set(user)
-            end
-            
-            # save the permissions data to the database
-            async do
-                permissions_repository.set(permissions)
-            end
-            
-            # store the user data in the cache
-            async(wait: false) do
-                cache.set(cache_key, user)
-            end
-            
-            # wait for all async tasks issued from this thread to complete 
-            # (unless the async task specified `wait: false`)
-            async :wait
-        end
+```ruby
+class UserModel
+  include PWork::Async
+
+  def save(user, permissions)
+    # save the user data to the database
+    async do
+      user_repository.set(user)
     end
-   
+
+    # save the permissions data to the database
+    async do
+      permissions_repository.set(permissions)
+    end
+
+    # store the user data in the cache
+    async(wait: false) do
+      cache.set(cache_key, user)
+    end
+
+    # wait for all async tasks issued from this thread to complete
+    # (unless the async task specified `wait: false`)
+    async :wait
+  end
+end
+```
+
 
 The above example shows how you might use the async/wait syntax within a save method of a user model to split the blocking calls
 of storing the user & permissions data in the database and updating the cache. The example above also shows how the set cache async block can be
@@ -78,7 +84,7 @@ In a sync flow the `save` method would take approx 260ms (100+120+40), but via a
 
 #### Environment Variables
 
-- **PWORK_ASYNC_MODE** [String] [Optional] [Default=thread] (thread/fork/test) 
+- **PWORK_ASYNC_MODE** [String] [Optional] [Default=thread] (thread/fork/test)
 > This env var is used to specify the mode to use for async tasks.
 
 > `test` mode processes tasks synchronously and is useful for testing.
@@ -99,8 +105,7 @@ This is used to wait for all async tasks declared from the current object on the
 
 > This is useful to allow async/wait not to interfere with other async calls from within other objects)
 
-
-> This is the number of threads within the async pool to use for processing async tasks           
+> This is the number of threads within the async pool to use for processing async tasks
 
 ## Development
 
@@ -111,7 +116,6 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/sage/pwork. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
-
 
 ## License
 
